@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="store"
+            type="com.kobbi.project.coronamask.model.Store" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@drawable/border_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_store_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{store.name}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_store_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{store.address}"
+            app:layout_constraintStart_toStartOf="@id/tv_store_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_store_name" />
+
+        <TextView
+            android:id="@+id/tv_stock_at"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:setStockAt="@{store.stockAt}"
+            app:layout_constraintStart_toStartOf="@id/tv_store_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_store_address" />
+
+        <TextView
+            android:id="@+id/remain_stat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            app:setRemainAt="@{store.remainStat}"
+            app:layout_constraintStart_toEndOf="@id/tv_store_name"
+            app:layout_constraintTop_toTopOf="@id/tv_store_name" />
+
+        <TextView
+            android:id="@+id/tv_distance_from_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@{String.valueOf(store.distance)}"
+            app:layout_constraintStart_toEndOf="@id/remain_stat"
+            app:layout_constraintTop_toTopOf="@id/remain_stat" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

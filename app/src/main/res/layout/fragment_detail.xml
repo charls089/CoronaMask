@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="detailVm"
+            type="com.kobbi.project.coronamask.ui.viewmodel.StoreDetailViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="5dp"
+        tools:context=".ui.fragment.StoreDetailFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_search_position"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:autofillHints="no"
+                android:hint="@string/hint_et_address"
+                android:inputType="textPostalAddress" />
+
+            <ImageButton
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/description_search_btn"
+                android:src="@drawable/baseline_search_24" />
+
+            <ImageButton
+                android:id="@+id/btn_my_position"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/description_position_btn"
+                android:src="@drawable/baseline_my_location_24" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_sort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/store_sort_arr"
+                app:setListener="@{detailVm}"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/tv_update_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="end"
+                android:layout_weight="1"
+                app:setUpdateTime="@{detailVm.updateTime}" />
+
+            <ImageButton
+                android:id="@+id/btn_refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/description_refresh"
+                android:src="@drawable/baseline_refresh_24" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_store_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="7dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:setDetails="@{detailVm.stores}" />
+
+    </LinearLayout>
+</layout>

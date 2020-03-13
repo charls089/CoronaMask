@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="store_sort_arr">
+        <item>거리</item>
+        <item>재고</item>
+        <item>입고시간</item>
+    </string-array>
+</resources>

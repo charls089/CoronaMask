@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">CoronaMask</string>
+
+    <string name="hint_et_address">찾으실 주소를 입력하세요.</string>
+    <string name="description_search_btn">Search around address you entered</string>
+    <string name="description_position_btn">Search around your location</string>
+    <string name="description_refresh">Refresh data</string>
+</resources>
