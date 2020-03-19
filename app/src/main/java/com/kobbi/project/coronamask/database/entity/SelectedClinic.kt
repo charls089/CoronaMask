@@ -15,5 +15,7 @@ data class SelectedClinic(
     val city: String,
     val name: String,
     val address: String,
-    val tel: String
+    val tel: String,
+    val latitude: Double,
+    val longitude: Double
 )

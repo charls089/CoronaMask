@@ -3,11 +3,16 @@ package com.kobbi.project.coronamask.ui.activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.kobbi.project.coronamask.R
+import com.kobbi.project.coronamask.database.ClinicDatabase
+import com.kobbi.project.coronamask.util.DLog
+import com.kobbi.project.coronamask.util.SharedPrefHelper
 
 class SplashActivity : AppCompatActivity() {
+    private var mTotalCount = 0
+
     companion object {
         private val NEED_PERMISSIONS =
             arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -65,8 +70,29 @@ class SplashActivity : AppCompatActivity() {
 
     private fun startService() {
         applicationContext?.let { context ->
-            startActivity(Intent(context, MainActivity::class.java))
-            finish()
+            ClinicDatabase.initializeDB(context, object : ClinicDatabase.CompleteListener {
+                override fun onStart(fileName: String, totalCount: Int) {
+                    DLog.i(tag = "Database", message = "init start... ($fileName, $totalCount)")
+                    mTotalCount = totalCount
+                }
+
+                override fun onLoad(count: Int) {
+                    DLog.i(tag = "Database", message = "init loading... ($count/$mTotalCount)")
+                }
+
+                override fun onComplete() {
+                    DLog.i(tag = "Database", message = "init complete")
+                    SharedPrefHelper.setBool(context, SharedPrefHelper.KEY_DB_INITIALIZED, true)
+                    startActivity(Intent(context, MainActivity::class.java))
+                    finish()
+                }
+
+                override fun onError(t: Throwable) {
+                    DLog.e(tag = "Database", message = "init error >> ${t.cause},${t.message}")
+                    t.printStackTrace()
+                    finish()
+                }
+            })
         }
     }
 }

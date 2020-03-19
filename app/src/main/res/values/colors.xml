@@ -4,10 +4,12 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
-    <color name="colorItemBackground">#D3B4FF</color>
+    <color name="colorItemBackground">#D5CCE3</color>
 
-    <color name="colorEmpty">#777777</color>
-    <color name="colorFew">#FF1C1C</color>
+    <color name="colorEmpty">#B6B6B6</color>
+    <color name="colorFew">#E33B3B</color>
     <color name="colorSome">#FFF492</color>
-    <color name="colorPlenty">#7BFF7B</color>
+    <color name="colorPlenty">#4CAF50</color>
+
+    <color name="colorWhite">#FFFFFF</color>
 </resources>

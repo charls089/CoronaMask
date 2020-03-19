@@ -10,17 +10,41 @@
             type="com.kobbi.project.coronamask.ui.viewmodel.ClinicViewModel" />
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.fragment.SelectedClinicFragment">
 
+        <LinearLayout
+            android:id="@+id/lo_clinic_spinner_container"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_clinic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:entries="@array/clinic_sort_arr"
+                app:setListener="@{clinicVm}" />
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_store_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:padding="5dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lo_clinic_spinner_container"
+
             app:setClinic="@{clinicVm.clinic}" />
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

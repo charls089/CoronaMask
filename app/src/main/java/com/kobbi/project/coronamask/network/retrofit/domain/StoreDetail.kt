@@ -1,4 +1,4 @@
-package com.kobbi.project.coronamask.network.domain
+package com.kobbi.project.coronamask.network.retrofit.domain
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,7 +1,7 @@
-package com.kobbi.project.coronamask.network.response
+package com.kobbi.project.coronamask.network.retrofit.response
 
 import com.google.gson.annotations.SerializedName
-import com.kobbi.project.coronamask.network.domain.StoreInfo
+import com.kobbi.project.coronamask.network.retrofit.domain.StoreInfo
 
 data class StoreResponse(
     @SerializedName("totalPages")

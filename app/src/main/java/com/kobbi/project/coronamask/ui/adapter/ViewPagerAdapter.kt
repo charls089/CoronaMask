@@ -1,6 +1,5 @@
 package com.kobbi.project.coronamask.ui.adapter
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
@@ -18,7 +17,6 @@ class ViewPagerAdapter(fragmentManager: FragmentManager, items: List<String>) :
     }
 
     override fun getItem(position: Int): Fragment {
-        Log.e("####", "ViewPagerAdapter.getItem() --> position : $position")
         return when (position) {
             0 -> StoreDetailFragment.newInstance()
             1 -> SelectedClinicFragment.newInstance()

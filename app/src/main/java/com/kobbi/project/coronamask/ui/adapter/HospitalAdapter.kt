@@ -1,15 +1,18 @@
 package com.kobbi.project.coronamask.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.kobbi.project.coronamask.ClickListener
 import com.kobbi.project.coronamask.R
-import com.kobbi.project.coronamask.database.entity.SafetyHospital
 import com.kobbi.project.coronamask.databinding.ItemHospitalDetailBinding
+import com.kobbi.project.coronamask.model.Hospital
 
-class HospitalAdapter(items: List<SafetyHospital>) : RecyclerView.Adapter<HospitalAdapter.ViewHolder>() {
-    private val mItems = mutableListOf<SafetyHospital>()
+class HospitalAdapter(items: List<Hospital>) : RecyclerView.Adapter<HospitalAdapter.ViewHolder>() {
+    var clickListener: ClickListener? = null
+    private val mItems = mutableListOf<Hospital>()
 
     init {
         mItems.addAll(items)
@@ -23,6 +26,10 @@ class HospitalAdapter(items: List<SafetyHospital>) : RecyclerView.Adapter<Hospit
         }
     }
 
+    override fun getItemId(position: Int): Long {
+        return mItems[position].code.toLong()
+    }
+
     override fun getItemCount(): Int {
         return mItems.size
     }
@@ -32,16 +39,24 @@ class HospitalAdapter(items: List<SafetyHospital>) : RecyclerView.Adapter<Hospit
             holder.bind(mItems[position])
     }
 
-    fun setItems(items:List<SafetyHospital>) {
+    fun setItems(items: List<Hospital>) {
         mItems.clear()
         mItems.addAll(items)
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(private val binding: ItemHospitalDetailBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(hospital: SafetyHospital) {
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        init {
+            binding.root.setOnClickListener(this)
+        }
+
+        fun bind(hospital: Hospital) {
             binding.hospital = hospital
+        }
+
+        override fun onClick(v: View?) {
+            v?.let { clickListener?.onItemClick(layoutPosition, v) }
         }
     }
 }

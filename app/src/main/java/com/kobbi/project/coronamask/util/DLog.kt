@@ -9,7 +9,7 @@ import java.io.FileOutputStream
 
 class DLog private constructor() {
     companion object {
-        private const val TAG_PREFIX = "kobbi_Corona"
+        private const val TAG_PREFIX = "kobbi_Corona_"
         private const val LOG_SUFFIX = "_log.txt"
 
         @JvmOverloads
@@ -52,6 +52,7 @@ class DLog private constructor() {
                 writeLogFile(context, tag, message)
         }
 
+        @Synchronized
         private fun writeLogFile(context: Context, tag: String, message: String?) {
             val dir = File(context.getExternalFilesDir(null), "log").apply {
                 if (!this.exists()) {

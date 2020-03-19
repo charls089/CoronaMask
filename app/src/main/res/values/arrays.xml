@@ -5,4 +5,14 @@
         <item>재고</item>
         <item>입고시간</item>
     </string-array>
+
+    <string-array name="clinic_sort_arr">
+        <item>거리</item>
+        <item>검체체취 가능</item>
+    </string-array>
+
+    <string-array name="hospital_sort_arr">
+        <item>거리</item>
+        <item>입원가능</item>
+    </string-array>
 </resources>

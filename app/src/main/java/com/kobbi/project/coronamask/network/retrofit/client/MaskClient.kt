@@ -1,5 +1,6 @@
-package com.kobbi.project.coronamask.network
+package com.kobbi.project.coronamask.network.retrofit.client
 
+import com.kobbi.project.coronamask.network.retrofit.api.MaskApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -14,8 +15,10 @@ class MaskClient private constructor() {
 
         @JvmStatic
         fun getInstance(): MaskApi {
-            return INSTANCE ?: synchronized(this) {
-                getClient().also {
+            return INSTANCE
+                ?: synchronized(this) {
+                getClient()
+                    .also {
                     INSTANCE = it
                 }
             }

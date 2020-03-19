@@ -1,12 +1,10 @@
-package com.kobbi.project.coronamask.network
+package com.kobbi.project.coronamask.network.retrofit.api
 
-import com.kobbi.project.coronamask.network.response.StoreDetailResponse
-import com.kobbi.project.coronamask.network.response.StoreResponse
-import io.reactivex.Flowable
+import com.kobbi.project.coronamask.network.retrofit.response.StoreDetailResponse
+import com.kobbi.project.coronamask.network.retrofit.response.StoreResponse
 import io.reactivex.Observable
 import retrofit2.Call
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.QueryMap
 
 interface MaskApi {

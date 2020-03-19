@@ -6,44 +6,70 @@
 
         <variable
             name="clinic"
-            type="com.kobbi.project.coronamask.database.entity.SelectedClinic" />
+            type="com.kobbi.project.coronamask.model.Clinic" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_item">
 
         <TextView
             android:id="@+id/tv_clinic_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:ellipsize="end"
+            android:maxWidth="250dp"
+            android:maxLines="1"
             android:text="@{clinic.name}"
+            android:textAlignment="viewStart"
+            android:textSize="17sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_clinic_address"
-            android:layout_width="wrap_content"
-            android:text="@{clinic.address}"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{clinic.address}"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toStartOf="@id/tv_clinic_distance"
             app:layout_constraintStart_toStartOf="@id/tv_clinic_name"
             app:layout_constraintTop_toBottomOf="@id/tv_clinic_name" />
 
         <TextView
             android:id="@+id/tv_clinic_tel"
             android:layout_width="wrap_content"
-            android:text="@{clinic.tel}"
             android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:text="@{clinic.tel}"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@id/tv_clinic_name"
             app:layout_constraintTop_toBottomOf="@id/tv_clinic_address" />
 
         <TextView
-            android:id="@+id/tv_enable_collect"
+            android:id="@+id/tv_clinic_enable"
             android:layout_width="wrap_content"
-            android:text="@{String.valueOf(clinic.enableCollect)}"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_clinic_name"
             app:layout_constraintStart_toEndOf="@id/tv_clinic_name"
-            app:layout_constraintTop_toTopOf="@id/tv_clinic_name" />
+            app:layout_constraintTop_toTopOf="@id/tv_clinic_name"
+            app:setEnableCollect="@{clinic.enableCollect}" />
+
+        <TextView
+            android:id="@+id/tv_clinic_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:setDistance="@{clinic.distance}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

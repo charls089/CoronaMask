@@ -10,78 +10,62 @@
             type="com.kobbi.project.coronamask.ui.viewmodel.StoreDetailViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="5dp"
         tools:context=".ui.fragment.StoreDetailFragment">
 
         <LinearLayout
+            android:id="@+id/lo_spinner_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/et_search_position"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:autofillHints="no"
-                android:hint="@string/hint_et_address"
-                android:inputType="textPostalAddress" />
-
-            <ImageButton
-                android:id="@+id/btn_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/description_search_btn"
-                android:src="@drawable/baseline_search_24" />
-
-            <ImageButton
-                android:id="@+id/btn_my_position"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/description_position_btn"
-                android:src="@drawable/baseline_my_location_24" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end">
+            android:layout_height="40dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spinner_sort"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:entries="@array/store_sort_arr"
-                app:setListener="@{detailVm}"
-                android:layout_gravity="center" />
+                app:setListener="@{detailVm}" />
 
             <TextView
                 android:id="@+id/tv_update_time"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="end"
                 android:layout_weight="1"
+                android:gravity="end"
                 app:setUpdateTime="@{detailVm.updateTime}" />
 
             <ImageButton
                 android:id="@+id/btn_refresh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/description_refresh"
+                android:onClick="@{()-> detailVm.refreshData()}"
+                android:padding="10dp"
                 android:src="@drawable/baseline_refresh_24" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_store_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="7dp"
+            android:layout_height="0dp"
+            android:padding="5dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:setDetails="@{detailVm.stores}" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lo_spinner_container"
+            app:setDetails="@{detailVm.stores}"
+            app:setVm="@{detailVm}" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

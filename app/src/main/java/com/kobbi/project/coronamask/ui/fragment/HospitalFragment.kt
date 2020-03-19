@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
+import com.kobbi.project.coronamask.CoronaMaskApplication
 import com.kobbi.project.coronamask.R
 import com.kobbi.project.coronamask.databinding.FragmentHospitalBinding
-import com.kobbi.project.coronamask.ui.viewmodel.HospitalViewModel
 
 class HospitalFragment : Fragment() {
 
@@ -24,8 +24,17 @@ class HospitalFragment : Fragment() {
         val binding = DataBindingUtil.inflate<FragmentHospitalBinding>(
             inflater, R.layout.fragment_hospital, container, false
         ).apply {
-            activity?.run {
-                hospitalVm = ViewModelProvider.AndroidViewModelFactory(application).create(HospitalViewModel::class.java)
+            hospitalVm = activity?.run {
+                (application as? CoronaMaskApplication)?.let { app ->
+                    app.hospitalViewModel.apply {
+                        hospital.observe(this@run, Observer {
+                            //TODO 애니메이션 넣기
+                        })
+                        app.searchViewModel.address.observe(this@run, Observer {
+                            setHospitalFromAddress(it)
+                        })
+                    }
+                }
             }
             lifecycleOwner = this@HospitalFragment
         }

@@ -1,15 +1,17 @@
 package com.kobbi.project.coronamask.ui.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.kobbi.project.coronamask.ClickListener
 import com.kobbi.project.coronamask.R
-import com.kobbi.project.coronamask.model.Store
 import com.kobbi.project.coronamask.databinding.ItemStoreDetailBinding
+import com.kobbi.project.coronamask.model.Store
 
 class StoreAdapter(items: List<Store>) : RecyclerView.Adapter<StoreAdapter.ViewHolder>() {
+    var clickListener: ClickListener? = null
     private val mItems = mutableListOf<Store>()
 
     init {
@@ -33,23 +35,30 @@ class StoreAdapter(items: List<Store>) : RecyclerView.Adapter<StoreAdapter.ViewH
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.e("####","onBindViewHolder() --> position : $position, mItems.size : ${mItems.size}")
-
         if (position < mItems.size)
             holder.bind(mItems[position])
     }
 
-    fun setItems(items:List<Store>) {
-        Log.e("####","DetailAdapter.setItems() --> items : $items")
+    fun setItems(items: List<Store>) {
         mItems.clear()
         mItems.addAll(items)
         notifyDataSetChanged()
     }
 
     inner class ViewHolder(private val binding: ItemStoreDetailBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+        init {
+            binding.root.setOnClickListener(this)
+        }
+
         fun bind(store: Store) {
             binding.store = store
+        }
+
+        override fun onClick(v: View?) {
+            v?.let {
+                clickListener?.onItemClick(layoutPosition, v)
+            }
         }
     }
 }

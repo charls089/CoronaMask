@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="searchVm"
+            type="com.kobbi.project.coronamask.ui.viewmodel.SearchViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/lo_search_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/border_search_field"
+                android:drawableStart="@drawable/baseline_search_24"
+                android:elevation="1dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="@string/hint_et_address"
+                android:imeOptions="actionNone"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLength="13"
+                android:padding="5dp"
+                android:text="@={searchVm.searchAddress}"
+                android:textSize="17sp"
+                app:searchAddress="@{searchVm.searchAddress}"
+                app:setVm="@{searchVm}" />
+
+            <RelativeLayout
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/border_search_field">
+
+                <ImageButton
+                    android:id="@+id/btn_my_position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/description_position_btn"
+                    android:onClick="@{()->searchVm.setAddressListFromPosition()}"
+                    android:src="@drawable/baseline_my_location_24" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lo_search_header">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_search_results"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:translationZ="2dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:setSearchResult="@{searchVm.searchList}"
+                app:setVm="@{searchVm}" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

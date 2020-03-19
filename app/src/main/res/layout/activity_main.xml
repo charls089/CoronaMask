@@ -19,6 +19,51 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.MainActivity">
 
+        <LinearLayout
+            android:id="@+id/lo_main_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_search"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/border_search_field"
+                android:drawableStart="@drawable/baseline_search_24"
+                android:elevation="1dp"
+                android:hint="@string/hint_et_address"
+                android:importantForAutofill="no"
+                android:maxLength="13"
+                android:onClick="@{()->mainVm.clickSearch()}"
+                android:padding="5dp"
+                android:textSize="17sp" />
+
+            <RelativeLayout
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/border_search_field">
+
+                <ImageButton
+                    android:id="@+id/btn_my_position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/description_position_btn"
+                    android:onClick="@{()->mainVm.clickMyPosition()}"
+                    android:src="@drawable/baseline_my_location_24" />
+            </RelativeLayout>
+        </LinearLayout>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/lo_tab"
             android:layout_width="match_parent"
@@ -37,7 +82,7 @@
             app:layout_constraintBottom_toTopOf="@id/lo_tab"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lo_main_header"
             app:setFsm="@{fragmentManager}"
             app:setPagerCount="@{mainVm.tabItems}" />
 

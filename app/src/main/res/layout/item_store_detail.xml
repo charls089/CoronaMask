@@ -10,23 +10,35 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@drawable/border_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_item">
 
         <TextView
             android:id="@+id/tv_store_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:ellipsize="end"
+            android:maxWidth="250dp"
+            android:maxLines="1"
             android:text="@{store.name}"
+            android:textAlignment="viewStart"
+            android:textSize="17sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_store_address"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:text="@{store.address}"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toStartOf="@id/tv_distance_from_position"
             app:layout_constraintStart_toStartOf="@id/tv_store_name"
             app:layout_constraintTop_toBottomOf="@id/tv_store_name" />
 
@@ -34,26 +46,31 @@
             android:id="@+id/tv_stock_at"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:setStockAt="@{store.stockAt}"
+            android:maxLines="1"
+            android:textSize="13sp"
             app:layout_constraintStart_toStartOf="@id/tv_store_name"
-            app:layout_constraintTop_toBottomOf="@id/tv_store_address" />
+            app:layout_constraintTop_toBottomOf="@id/tv_store_address"
+            app:setStockAt="@{store.stockAt}" />
 
         <TextView
             android:id="@+id/remain_stat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            app:setRemainAt="@{store.remainStat}"
+            android:layout_marginStart="10dp"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_store_name"
             app:layout_constraintStart_toEndOf="@id/tv_store_name"
-            app:layout_constraintTop_toTopOf="@id/tv_store_name" />
+            app:layout_constraintTop_toTopOf="@+id/tv_store_name"
+            app:setRemainAt="@{store.remainStat}" />
 
         <TextView
             android:id="@+id/tv_distance_from_position"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:text="@{String.valueOf(store.distance)}"
-            app:layout_constraintStart_toEndOf="@id/remain_stat"
-            app:layout_constraintTop_toTopOf="@id/remain_stat" />
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:setDistance="@{store.distance}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

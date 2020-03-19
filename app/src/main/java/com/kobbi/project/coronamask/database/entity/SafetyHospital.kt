@@ -17,5 +17,7 @@ data class SafetyHospital(
     val address: String,
     val type: String,
     val tel: String,
-    val date: Date? = null
+    val date: Date? = null,
+    val latitude: Double,
+    val longitude: Double
 )

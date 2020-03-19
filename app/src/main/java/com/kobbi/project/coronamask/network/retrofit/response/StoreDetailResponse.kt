@@ -1,7 +1,7 @@
-package com.kobbi.project.coronamask.network.response
+package com.kobbi.project.coronamask.network.retrofit.response
 
 import com.google.gson.annotations.SerializedName
-import com.kobbi.project.coronamask.network.domain.StoreDetail
+import com.kobbi.project.coronamask.network.retrofit.domain.StoreDetail
 
 data class StoreDetailResponse(
     @SerializedName("count")

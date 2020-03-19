@@ -1,5 +1,11 @@
 package com.kobbi.project.coronamask.util
 
+import android.content.Context
+import android.location.Geocoder
+import android.location.Location
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import com.kobbi.project.coronamask.database.ClinicDatabase
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,6 +23,7 @@ class Utils private constructor() {
         const val VALUE_TIME_FORMAT = "HH:mm:ss"
         const val VALUE_DATE_FORMAT = "yyyyMMdd"
         const val VALUE_DATETIME_FORMAT = "yyyy/MM/dd HH:mm:ss"
+        const val VALUE_DATETIME_FORMAT2 = "yyyy년 MM월 dd일, HH:mm:ss"
 
         @JvmStatic
         fun getCurrentTime(
@@ -72,6 +79,15 @@ class Utils private constructor() {
         }
 
         @JvmStatic
+        fun setHideSoftInput(view: View) {
+            view.context?.run {
+                val manager =
+                    applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                manager?.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+        }
+
+        @JvmStatic
         fun convertStringToDate(format: String = VALUE_DATETIME_FORMAT, date: String?): Date? {
             return date?.run {
                 try {
@@ -83,10 +99,62 @@ class Utils private constructor() {
             }
         }
 
+        /**
+         * @param center 사용자 위치 혹은 검색한 위치
+         * @param end 주소의 위치(도착점의 위치)
+         *
+         * @return 두 지점간의 거리
+         */
+        @JvmStatic
+        fun distanceToPoint(center: Location, end: Location): Int {
+            return center.distanceTo(end).toInt()
+        }
+
         private fun convertTimeToString(time: Int): String {
             return when (time) {
                 in 0..9 -> "0$time"
                 else -> time.toString()
+            }
+        }
+
+        private fun addLatLngToCsvData(context: Context) {
+            ClinicDatabase.AddressFile.values().forEach { file ->
+                val addressIndex = when (file) {
+                    ClinicDatabase.AddressFile.SELECTED_CLINIC_ADDRESS -> 8
+                    ClinicDatabase.AddressFile.SAFETY_HOSPITAL_ADDRESS -> 7
+                }
+                String.format("address_%s_20200311.csv", file.fileName).let { fileName ->
+                    context.applicationContext.assets.open(fileName).use { ips ->
+                        ips.bufferedReader().use { br ->
+                            br.readLines().forEach { line ->
+                                try {
+                                    StringBuilder().run {
+                                        ClinicDatabase.splitCsvString(line).let { splits ->
+                                            splits.forEach { data ->
+                                                data.forEach {
+                                                    append(it)
+                                                    append(',')
+                                                }
+                                            }
+                                            Geocoder(context).getFromLocationName(
+                                                splits[addressIndex], 1
+                                            )?.let { addressList ->
+                                                if (addressList.isNotEmpty())
+                                                    addressList[0].run {
+                                                        append(latitude)
+                                                        append(',')
+                                                        append(longitude)
+                                                    }
+                                            }
+                                        }
+                                    }
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
