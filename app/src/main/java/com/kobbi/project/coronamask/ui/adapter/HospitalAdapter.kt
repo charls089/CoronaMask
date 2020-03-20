@@ -9,6 +9,7 @@ import com.kobbi.project.coronamask.ClickListener
 import com.kobbi.project.coronamask.R
 import com.kobbi.project.coronamask.databinding.ItemHospitalDetailBinding
 import com.kobbi.project.coronamask.model.Hospital
+import com.kobbi.project.coronamask.util.Utils
 
 class HospitalAdapter(items: List<Hospital>) : RecyclerView.Adapter<HospitalAdapter.ViewHolder>() {
     var clickListener: ClickListener? = null
@@ -27,7 +28,9 @@ class HospitalAdapter(items: List<Hospital>) : RecyclerView.Adapter<HospitalAdap
     }
 
     override fun getItemId(position: Int): Long {
-        return mItems[position].code.toLong()
+        return mItems[position].run {
+            (Utils.replaceSign(longitude.toString()) + Utils.replaceSign((latitude.toString()))).toLong()
+        }
     }
 
     override fun getItemCount(): Int {

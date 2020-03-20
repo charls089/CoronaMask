@@ -259,7 +259,7 @@ object BindingAdapter {
     @JvmStatic
     fun setSearchAddress(textView: TextView, address: Address?) {
         address?.run {
-            textView.text = "${address.getAddressLine(0)}"
+            textView.text = address.getAddressLine(0)
         }
     }
 
@@ -281,7 +281,7 @@ object BindingAdapter {
     @JvmStatic
     fun setHospitalization(textView: TextView, type: String?) {
         textView.run {
-            if (type?.contains("입원") == true) {
+            if (type == "B") {
                 text = "입원 가능"
                 setBackgroundResource(R.drawable.border_plenty)
             } else {

@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.kobbi.project.coronamask.R
 import com.kobbi.project.coronamask.database.ClinicDatabase
+import com.kobbi.project.coronamask.network.crawling.CrawlingController
 import com.kobbi.project.coronamask.util.DLog
 import com.kobbi.project.coronamask.util.SharedPrefHelper
 
@@ -83,6 +84,7 @@ class SplashActivity : AppCompatActivity() {
                 override fun onComplete() {
                     DLog.i(tag = "Database", message = "init complete")
                     SharedPrefHelper.setBool(context, SharedPrefHelper.KEY_DB_INITIALIZED, true)
+                    CrawlingController(applicationContext).updateClinicData()
                     startActivity(Intent(context, MainActivity::class.java))
                     finish()
                 }

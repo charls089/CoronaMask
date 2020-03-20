@@ -55,7 +55,8 @@ class ClinicViewModel(application: Application) : AndroidViewModel(application) 
     fun setClinic(location: Location) {
         thread {
             mClinicList.clear()
-            val dataList = ClinicDatabase.getDatabase(mContext).selectedClinicDao().loadAll()
+            val dataList =
+                ClinicDatabase.getDatabase(mContext).clinicInfoDao().findFromCode("CLINIC")
             DLog.i(tag = "ClinicViewModel", message = "loadAll Data >> size : ${dataList.size}")
             dataList.forEach {
                 val distance = location.distanceTo(Location("Address").apply {
@@ -69,13 +70,14 @@ class ClinicViewModel(application: Application) : AndroidViewModel(application) 
                 if (distance < 10)
                     mClinicList.add(
                         Clinic(
-                            it.code,
-                            it.enableCollect,
                             it.province,
                             it.city,
                             it.name,
                             it.address,
                             it.tel,
+                            it.type == "O",
+                            it.latitude,
+                            it.longitude,
                             distance
                         )
                     )

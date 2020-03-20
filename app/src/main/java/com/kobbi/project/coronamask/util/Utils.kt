@@ -3,9 +3,13 @@ package com.kobbi.project.coronamask.util
 import android.content.Context
 import android.location.Geocoder
 import android.location.Location
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.kobbi.project.coronamask.database.ClinicDatabase
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -88,6 +92,11 @@ class Utils private constructor() {
         }
 
         @JvmStatic
+        fun replaceSign(string: String): String {
+            return "\\W".toRegex().replace(string, "").take(8)
+        }
+
+        @JvmStatic
         fun convertStringToDate(format: String = VALUE_DATETIME_FORMAT, date: String?): Date? {
             return date?.run {
                 try {
@@ -117,35 +126,55 @@ class Utils private constructor() {
             }
         }
 
-        private fun addLatLngToCsvData(context: Context) {
+        fun addLatLngToCsvData(context: Context) {
             ClinicDatabase.AddressFile.values().forEach { file ->
-                val addressIndex = when (file) {
-                    ClinicDatabase.AddressFile.SELECTED_CLINIC_ADDRESS -> 8
-                    ClinicDatabase.AddressFile.SAFETY_HOSPITAL_ADDRESS -> 7
-                }
-                String.format("address_%s_20200311.csv", file.fileName).let { fileName ->
+                String.format("info_%s_20200320.csv", file.fileName).let { fileName ->
                     context.applicationContext.assets.open(fileName).use { ips ->
                         ips.bufferedReader().use { br ->
-                            br.readLines().forEach { line ->
+                            val readLines = br.readLines()
+                            val totalCount = readLines.size
+                            readLines.forEachIndexed { index, line ->
                                 try {
                                     StringBuilder().run {
                                         ClinicDatabase.splitCsvString(line).let { splits ->
                                             splits.forEach { data ->
-                                                data.forEach {
-                                                    append(it)
-                                                    append(',')
+                                                append(data)
+                                                append(',')
+                                            }
+                                            if (file == ClinicDatabase.AddressFile.DRIVE_THROUGH) {
+                                                append("O")
+                                                append(',')
+                                            }
+                                            Geocoder(context).getFromLocationName(splits[4], 1)
+                                                ?.let { addressList ->
+                                                    if (addressList.isNotEmpty())
+                                                        addressList[0].run {
+                                                            append(latitude)
+                                                            append(',')
+                                                            append(longitude)
+                                                        }
+                                                }
+                                        }
+                                        val dir =
+                                            File(context.getExternalFilesDir(null), "log").apply {
+                                                if (!this.exists()) {
+                                                    this.mkdirs()
                                                 }
                                             }
-                                            Geocoder(context).getFromLocationName(
-                                                splits[addressIndex], 1
-                                            )?.let { addressList ->
-                                                if (addressList.isNotEmpty())
-                                                    addressList[0].run {
-                                                        append(latitude)
-                                                        append(',')
-                                                        append(longitude)
-                                                    }
+                                        val logFile = File(dir, fileName)
+                                        try {
+                                            val lineData = this.toString()
+                                            FileOutputStream(logFile, true).use {
+                                                if (logFile.length() > 0)
+                                                    it.write("\r\n".toByteArray())
+                                                it.write(lineData.toByteArray())
+                                                Log.w(
+                                                    "MakeCsvFile",
+                                                    "data($index/$totalCount) : $lineData"
+                                                )
                                             }
+                                        } catch (e: FileNotFoundException) {
+                                            Log.e("MakeCsvFile", "CSV File($fileName) Not Found.")
                                         }
                                     }
                                 } catch (e: Exception) {

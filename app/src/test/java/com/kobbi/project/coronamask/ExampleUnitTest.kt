@@ -1,6 +1,7 @@
 package com.kobbi.project.coronamask
 
 import com.kobbi.project.coronamask.database.ClinicDatabase
+import com.kobbi.project.coronamask.network.crawling.CrawlingController
 import org.junit.Test
 
 import org.junit.Assert.*

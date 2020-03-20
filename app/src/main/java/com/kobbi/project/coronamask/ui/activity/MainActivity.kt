@@ -13,7 +13,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main).run {
             (application as? CoronaMaskApplication)?.let { app ->
                 mainVm = app.mainViewModel.apply {

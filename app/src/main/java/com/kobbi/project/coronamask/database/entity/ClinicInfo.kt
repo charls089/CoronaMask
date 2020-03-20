@@ -2,22 +2,20 @@ package com.kobbi.project.coronamask.database.entity
 
 import androidx.room.Entity
 import androidx.room.Index
-import java.util.*
 
 @Entity(
-    tableName = "SafetyHospital",
-    primaryKeys = ["code", "type"],
+    tableName = "ClinicInfo",
+    primaryKeys = ["code", "name"],
     indices = [Index("province", "city", "name")]
 )
-data class SafetyHospital(
-    val code: Int,
+data class ClinicInfo(
+    val code: String,
     val province: String,
     val city: String,
     val name: String,
     val address: String,
-    val type: String,
     val tel: String,
-    val date: Date? = null,
+    val type: String,
     val latitude: Double,
     val longitude: Double
 )

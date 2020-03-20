@@ -7,26 +7,20 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.kobbi.project.coronamask.database.converter.DataConverter
-import com.kobbi.project.coronamask.database.dao.SafetyHospitalDAO
-import com.kobbi.project.coronamask.database.dao.SelectedClinicDAO
-import com.kobbi.project.coronamask.database.entity.SafetyHospital
-import com.kobbi.project.coronamask.database.entity.SelectedClinic
+import com.kobbi.project.coronamask.database.dao.ClinicInfoDAO
+import com.kobbi.project.coronamask.database.entity.ClinicInfo
 import com.kobbi.project.coronamask.util.DLog
 import com.kobbi.project.coronamask.util.SharedPrefHelper
-import java.text.ParseException
-import java.text.SimpleDateFormat
-import java.util.*
 import java.util.concurrent.Executors
 import kotlin.concurrent.thread
 
 @Database(
-    entities = [SelectedClinic::class, SafetyHospital::class],
+    entities = [ClinicInfo::class],
     version = 1
 )
 @TypeConverters(DataConverter::class)
 abstract class ClinicDatabase : RoomDatabase() {
-    abstract fun safetyHospitalDao(): SafetyHospitalDAO
-    abstract fun selectedClinicDao(): SelectedClinicDAO
+    abstract fun clinicInfoDao(): ClinicInfoDAO
 
     companion object {
         private const val TAG = "ClinicDatabase"
@@ -68,18 +62,7 @@ abstract class ClinicDatabase : RoomDatabase() {
             AddressFile.values().forEach { file ->
                 getDataFromAsset(context, file, listener).let {
                     Executors.newSingleThreadScheduledExecutor().execute {
-                        val database = getDatabase(context)
-                        when (file) {
-                            AddressFile.SAFETY_HOSPITAL_ADDRESS -> {
-                                database.safetyHospitalDao()
-                                    .insert(it.filterIsInstance(SafetyHospital::class.java))
-                            }
-                            AddressFile.SELECTED_CLINIC_ADDRESS -> {
-                                database.selectedClinicDao()
-                                    .insert(it.filterIsInstance(SelectedClinic::class.java))
-                            }
-                        }
-
+                        getDatabase(context).clinicInfoDao().insert(it)
                         SharedPrefHelper.setBool(
                             context,
                             SharedPrefHelper.KEY_DB_INITIALIZED,
@@ -94,9 +77,9 @@ abstract class ClinicDatabase : RoomDatabase() {
             context: Context,
             file: AddressFile,
             listener: CompleteListener
-        ): List<Any> {
-            val results = mutableListOf<Any>()
-            String.format("address_%s_20200311.csv", file.fileName).let { fileName ->
+        ): List<ClinicInfo> {
+            val results = mutableListOf<ClinicInfo>()
+            String.format("info_%s_20200320.csv", file.fileName).let { fileName ->
                 context.applicationContext.assets.open(fileName).use { ips ->
                     ips.bufferedReader().use { br ->
                         val dataList = br.readLines()
@@ -104,43 +87,20 @@ abstract class ClinicDatabase : RoomDatabase() {
                         try {
                             for (i in 1 until dataList.size) {
                                 val data = splitCsvString(dataList[i])
-                                results.add(
-                                    when (file) {
-                                        AddressFile.SAFETY_HOSPITAL_ADDRESS -> {
-                                            if (data.size == 10)
-                                                SafetyHospital(
-                                                    data[0].toInt(),
-                                                    data[1],
-                                                    data[2],
-                                                    data[3],
-                                                    data[4],
-                                                    data[5],
-                                                    data[6],
-                                                    parseStringToDate(data[7]),
-                                                    data[8].toDouble(),
-                                                    data[9].toDouble()
-                                                )
-                                            else
-                                                Any()
-                                        }
-                                        AddressFile.SELECTED_CLINIC_ADDRESS -> {
-                                            if (data.size == 9)
-                                                SelectedClinic(
-                                                    data[0].toInt(),
-                                                    convertYnToBoolean(data[1]),
-                                                    data[2],
-                                                    data[3],
-                                                    data[4],
-                                                    data[5],
-                                                    data[6],
-                                                    data[7].toDouble(),
-                                                    data[8].toDouble()
-                                                )
-                                            else
-                                                Any()
-                                        }
-                                    }
-                                )
+                                if (data.size == 9)
+                                    results.add(
+                                        ClinicInfo(
+                                            data[0],
+                                            data[1],
+                                            data[2],
+                                            data[3],
+                                            data[4],
+                                            data[5],
+                                            data[6],
+                                            data[7].toDouble(),
+                                            data[8].toDouble()
+                                        )
+                                    )
                                 listener.onLoad(i)
                             }
                         } catch (e: Exception) {
@@ -150,19 +110,6 @@ abstract class ClinicDatabase : RoomDatabase() {
                 }
             }
             return results
-        }
-
-        private fun parseStringToDate(date: String): Date? {
-            return try {
-                SimpleDateFormat("yyyy.MM.dd.", Locale.getDefault()).parse(date)
-            } catch (e: ParseException) {
-                null
-            }
-        }
-
-        private fun convertYnToBoolean(yn: String): Boolean {
-            return yn == "Y"
-
         }
 
         fun splitCsvString(csvString: String): List<String> {
@@ -189,7 +136,8 @@ abstract class ClinicDatabase : RoomDatabase() {
                 mutableListOf<String>().apply {
                     for (i in 0 until splitIndices.size - 1) {
                         val data = csvString.substring(splitIndices[i] + 1, splitIndices[i + 1])
-                        add(data.replace("\"", ""))
+//                        add(data.replace("\"", ""))
+                        add(data)
                     }
 
                 }
@@ -201,7 +149,8 @@ abstract class ClinicDatabase : RoomDatabase() {
 
     enum class AddressFile(val fileName: String) {
         SAFETY_HOSPITAL_ADDRESS("safety_hospital"),
-        SELECTED_CLINIC_ADDRESS("selected_clinic")
+        SELECTED_CLINIC_ADDRESS("selected_clinic"),
+        DRIVE_THROUGH("drive_through")
     }
 
     interface CompleteListener {

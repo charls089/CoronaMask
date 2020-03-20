@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kobbi.project.coronamask.ClickListener
 import com.kobbi.project.coronamask.R
 import com.kobbi.project.coronamask.databinding.ItemSearchResultBinding
+import com.kobbi.project.coronamask.util.Utils
 
 class SearchAdapter(items: List<Address>) : RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
     var clickListener: ClickListener? = null
@@ -28,7 +29,7 @@ class SearchAdapter(items: List<Address>) : RecyclerView.Adapter<SearchAdapter.V
 
     override fun getItemId(position: Int): Long {
         return mItems[position].run {
-            (replaceSign(longitude.toString()) + replaceSign((latitude.toString()))).toLong()
+            (Utils.replaceSign(longitude.toString()) + Utils.replaceSign((latitude.toString()))).toLong()
         }
     }
 
@@ -45,10 +46,6 @@ class SearchAdapter(items: List<Address>) : RecyclerView.Adapter<SearchAdapter.V
         mItems.clear()
         mItems.addAll(items)
         notifyDataSetChanged()
-    }
-
-    private fun replaceSign(string: String): String {
-        return "\\W".toRegex().replace(string, "").take(8)
     }
 
     inner class ViewHolder(private val binding: ItemSearchResultBinding) :
