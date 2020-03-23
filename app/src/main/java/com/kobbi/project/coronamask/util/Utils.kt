@@ -26,6 +26,7 @@ class Utils private constructor() {
     companion object {
         const val VALUE_TIME_FORMAT = "HH:mm:ss"
         const val VALUE_DATE_FORMAT = "yyyyMMdd"
+        const val VALUE_DATE_FORMAT2 = "yyyy년 MM월 dd일"
         const val VALUE_DATETIME_FORMAT = "yyyy/MM/dd HH:mm:ss"
         const val VALUE_DATETIME_FORMAT2 = "yyyy년 MM월 dd일, HH:mm:ss"
 

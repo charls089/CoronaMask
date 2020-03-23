@@ -17,10 +17,10 @@
 
         <LinearLayout
             android:id="@+id/lo_clinic_spinner_container"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -31,6 +31,14 @@
                 android:layout_gravity="center"
                 android:entries="@array/clinic_sort_arr"
                 app:setListener="@{clinicVm}" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="end"
+                app:setUpdate="@{clinicVm.updateTime}" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -10,11 +10,15 @@ import com.kobbi.project.coronamask.database.ClinicDatabase
 import com.kobbi.project.coronamask.location.LocationCompleteListener
 import com.kobbi.project.coronamask.location.LocationController
 import com.kobbi.project.coronamask.model.Hospital
+import com.kobbi.project.coronamask.network.crawling.CrawlingController
 import com.kobbi.project.coronamask.util.DLog
 import kotlin.concurrent.thread
 
 class HospitalViewModel(application: Application) : AndroidViewModel(application) {
     val hospital: LiveData<List<Hospital>> get() = _hospital
+    val updateTime = ClinicDatabase.getDatabase(application).clinicBaseDao().getBaseLive(
+        CrawlingController.UrlType.SAFETY_HOSPITAL.code
+    )
 
     private val _hospital: MutableLiveData<List<Hospital>> = MutableLiveData()
 
@@ -73,8 +77,8 @@ class HospitalViewModel(application: Application) : AndroidViewModel(application
                             it.city,
                             it.name,
                             it.address,
-                            it.type,
                             it.tel,
+                            it.type == "B",
                             it.latitude,
                             it.longitude,
                             distance
@@ -96,7 +100,7 @@ class HospitalViewModel(application: Application) : AndroidViewModel(application
                 }
                 SortType.ENABLE_HOSPITALIZATION -> {
                     mHospitalList.filter {
-                        it.type.contains("입원")
+                        it.enabled
                     }.sortedBy(Hospital::distance)
                 }
             }

@@ -5,6 +5,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.util.Log
 import com.kobbi.project.coronamask.database.ClinicDatabase
+import com.kobbi.project.coronamask.database.entity.ClinicBase
 import com.kobbi.project.coronamask.database.entity.ClinicInfo
 import com.kobbi.project.coronamask.util.Utils
 import org.jsoup.Jsoup
@@ -25,7 +26,9 @@ class CrawlingController(private val mContext: Context) {
     }
 
     fun updateClinicData() {
-        val clinicInfoDao = ClinicDatabase.getDatabase(mContext).clinicInfoDao()
+        val database = ClinicDatabase.getDatabase(mContext)
+        val baseDao = database.clinicBaseDao()
+        val clinicInfoDao = database.clinicInfoDao()
         UrlType.values().forEach { type ->
             thread {
                 val results = mutableListOf<ClinicInfo>()
@@ -38,6 +41,7 @@ class CrawlingController(private val mContext: Context) {
                         Log.e("####", "updateTime : $updateTime")
                         val parseData = Utils.convertStringToDate("yy년 M월 dd일", updateTime)
                         Log.e("####", "parseData : $parseData")
+                        baseDao.insert(ClinicBase(type.code, parseData))
                     }
                     getElementsByClass("tb_center").let { tb ->
                         tb.select("tr").forEach { row ->

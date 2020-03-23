@@ -7,7 +7,9 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.kobbi.project.coronamask.database.converter.DataConverter
+import com.kobbi.project.coronamask.database.dao.ClinicBaseDAO
 import com.kobbi.project.coronamask.database.dao.ClinicInfoDAO
+import com.kobbi.project.coronamask.database.entity.ClinicBase
 import com.kobbi.project.coronamask.database.entity.ClinicInfo
 import com.kobbi.project.coronamask.util.DLog
 import com.kobbi.project.coronamask.util.SharedPrefHelper
@@ -15,11 +17,12 @@ import java.util.concurrent.Executors
 import kotlin.concurrent.thread
 
 @Database(
-    entities = [ClinicInfo::class],
+    entities = [ClinicBase::class, ClinicInfo::class],
     version = 1
 )
 @TypeConverters(DataConverter::class)
 abstract class ClinicDatabase : RoomDatabase() {
+    abstract fun clinicBaseDao(): ClinicBaseDAO
     abstract fun clinicInfoDao(): ClinicInfoDAO
 
     companion object {

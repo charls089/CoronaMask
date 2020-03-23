@@ -10,11 +10,15 @@ import com.kobbi.project.coronamask.database.ClinicDatabase
 import com.kobbi.project.coronamask.location.LocationCompleteListener
 import com.kobbi.project.coronamask.location.LocationController
 import com.kobbi.project.coronamask.model.Clinic
+import com.kobbi.project.coronamask.network.crawling.CrawlingController
 import com.kobbi.project.coronamask.util.DLog
 import kotlin.concurrent.thread
 
 class ClinicViewModel(application: Application) : AndroidViewModel(application) {
     val clinic: LiveData<List<Clinic>> get() = _clinic
+    val updateTime = ClinicDatabase.getDatabase(application).clinicBaseDao().getBaseLive(
+        CrawlingController.UrlType.ALL_CLINIC.code
+    )
 
     private val _clinic: MutableLiveData<List<Clinic>> = MutableLiveData()
 

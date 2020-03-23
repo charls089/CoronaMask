@@ -5,8 +5,8 @@ data class Hospital(
     val city: String,
     val name: String,
     val address: String,
-    val type: String,
     val tel: String,
+    val enabled: Boolean,
     val latitude: Double,
     val longitude: Double,
     val distance: Float?

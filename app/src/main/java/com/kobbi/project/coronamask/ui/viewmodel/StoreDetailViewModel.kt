@@ -81,7 +81,11 @@ class StoreDetailViewModel(application: Application) : AndroidViewModel(applicat
                                     else -> -1
                                 }
                             else
-                                -1
+                                when {
+                                    p0Time == null -> -1
+                                    p1Time == null -> 1
+                                    else -> 0
+                                }
                         }
                         SortType.REMAIN_STAT -> {
                             val p0remainStat = p0.remainStat.level.last

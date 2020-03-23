@@ -2,12 +2,14 @@ package com.kobbi.project.coronamask.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import java.util.*
 
 class SharedPrefHelper private constructor() {
     companion object {
         private const val KEY_PREFERENCE = "_Preference"
 
         const val KEY_DB_INITIALIZED = "db_init"
+        const val KEY_DB_UPDATE_TIME = "db_update_time"
 
         @JvmStatic
         fun setBool(context: Context, key: String, value: Boolean) {
@@ -21,6 +23,7 @@ class SharedPrefHelper private constructor() {
         fun getBool(context: Context, key: String, defValue: Boolean = false): Boolean {
             return getPreference(context).getBoolean(key, defValue)
         }
+
         @JvmStatic
         fun setInt(context: Context, key: String, value: Int) {
             getPreference(context).edit().run {
@@ -28,6 +31,7 @@ class SharedPrefHelper private constructor() {
                 apply()
             }
         }
+
         @JvmStatic
         fun getInt(context: Context, key: String, defValue: Int = Int.MIN_VALUE): Int {
             return getPreference(context).getInt(key, defValue)
@@ -40,10 +44,34 @@ class SharedPrefHelper private constructor() {
                 apply()
             }
         }
+
         @JvmStatic
         fun getLong(context: Context, key: String, defValue: Long = 0L): Long {
             return getPreference(context).getLong(key, defValue)
         }
+
+        @JvmStatic
+        fun setDate(context: Context, key: String, value: Date?) {
+            value?.run {
+                getPreference(context).edit().run {
+                    putLong(key, value.time)
+                    apply()
+                }
+            }
+        }
+
+        @JvmStatic
+        fun getDate(context: Context, key: String): Date? {
+            return getPreference(context).getLong(key, 0L).let { value ->
+                if (value != 0L)
+                    Date().apply {
+                        time = value
+                    }
+                else
+                    null
+            }
+        }
+
         @JvmStatic
         fun registerPrefChangeListener(
             context: Context,
@@ -51,6 +79,7 @@ class SharedPrefHelper private constructor() {
         ) {
             getPreference(context).registerOnSharedPreferenceChangeListener(listener)
         }
+
         @JvmStatic
         fun unregisterPrefChangeListener(
             context: Context,

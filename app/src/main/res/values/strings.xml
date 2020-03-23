@@ -6,4 +6,10 @@
     <string name="description_search_btn">Search around address you entered</string>
     <string name="description_position_btn">Search around your location</string>
     <string name="description_refresh">Refresh data</string>
+
+    <string name="text_enable_collect">검체채취 가능</string>
+    <string name="text_disable_collect">검체채취 불가</string>
+
+    <string name="text_enable_hospitalization">입원 가능</string>
+    <string name="text_disable_hospitalization">입원 불가</string>
 </resources>

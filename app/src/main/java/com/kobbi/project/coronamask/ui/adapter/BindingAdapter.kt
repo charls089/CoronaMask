@@ -16,6 +16,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.kobbi.project.coronamask.ClickListener
 import com.kobbi.project.coronamask.R
+import com.kobbi.project.coronamask.database.entity.ClinicBase
 import com.kobbi.project.coronamask.model.Clinic
 import com.kobbi.project.coronamask.model.Hospital
 import com.kobbi.project.coronamask.model.RemainState
@@ -127,6 +128,17 @@ object BindingAdapter {
             }
             textView.text =
                 String.format(format, time)
+        }
+    }
+
+    @BindingAdapter("setUpdate")
+    @JvmStatic
+    fun setUpdate(textView: TextView, data: ClinicBase?) {
+        data?.run {
+            data.updateTime?.time?.let {
+                val value = Utils.getCurrentTime(Utils.VALUE_DATE_FORMAT2, it)
+                textView.text = String.format("업데이트 : %s", value)
+            }
         }
     }
 
@@ -268,10 +280,10 @@ object BindingAdapter {
     fun setEnableCollect(textView: TextView, enable: Boolean?) {
         textView.run {
             if (enable == true) {
-                text = "검체채취 가능"
+                setText(R.string.text_enable_collect)
                 setBackgroundResource(R.drawable.border_plenty)
             } else {
-                text = "검체채취 불가"
+                setText(R.string.text_disable_collect)
                 setBackgroundResource(R.drawable.border_empty)
             }
         }
@@ -279,13 +291,13 @@ object BindingAdapter {
 
     @BindingAdapter("setHospitalization")
     @JvmStatic
-    fun setHospitalization(textView: TextView, type: String?) {
+    fun setHospitalization(textView: TextView, enable: Boolean?) {
         textView.run {
-            if (type == "B") {
-                text = "입원 가능"
+            if (enable == true) {
+                setText(R.string.text_enable_hospitalization)
                 setBackgroundResource(R.drawable.border_plenty)
             } else {
-                text = "입원 불가"
+                setText(R.string.text_disable_hospitalization)
                 setBackgroundResource(R.drawable.border_empty)
             }
         }
