@@ -136,8 +136,7 @@ abstract class ClinicDatabase : RoomDatabase() {
                 mutableListOf<String>().apply {
                     for (i in 0 until splitIndices.size - 1) {
                         val data = csvString.substring(splitIndices[i] + 1, splitIndices[i + 1])
-//                        add(data.replace("\"", ""))
-                        add(data)
+                        add(data.replace("\"", ""))
                     }
 
                 }
