@@ -72,6 +72,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:setTapContents="@{mainVm.tabItems}"
+            app:setViewPosition="@{mainVm.position}"
+            app:setVm="@{mainVm}"
             app:tabGravity="center"
             app:tabMode="auto" />
 
@@ -84,7 +86,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lo_main_header"
             app:setFsm="@{fragmentManager}"
-            app:setPagerCount="@{mainVm.tabItems}" />
+            app:setPagerCount="@{mainVm.tabItems}"
+            app:setViewPosition="@{mainVm.position}"
+            app:setVm="@{mainVm}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

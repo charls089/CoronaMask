@@ -21,10 +21,7 @@ import com.kobbi.project.coronamask.model.Clinic
 import com.kobbi.project.coronamask.model.Hospital
 import com.kobbi.project.coronamask.model.RemainState
 import com.kobbi.project.coronamask.model.Store
-import com.kobbi.project.coronamask.ui.viewmodel.ClinicViewModel
-import com.kobbi.project.coronamask.ui.viewmodel.HospitalViewModel
-import com.kobbi.project.coronamask.ui.viewmodel.SearchViewModel
-import com.kobbi.project.coronamask.ui.viewmodel.StoreDetailViewModel
+import com.kobbi.project.coronamask.ui.viewmodel.*
 import com.kobbi.project.coronamask.util.DLog
 import com.kobbi.project.coronamask.util.Utils
 import java.util.*
@@ -84,23 +81,39 @@ object BindingAdapter {
             }
     }
 
-    @BindingAdapter("setTapContents")
+    @BindingAdapter("setTapContents", "setVm")
     @JvmStatic
-    fun setTapContents(tabLayout: TabLayout, items: List<String>?) {
+    fun setTapContents(tabLayout: TabLayout, items: List<String>?, mainVm: MainViewModel?) {
         items?.forEach {
             tabLayout.newTab().run {
                 text = it
                 tabLayout.addTab(this)
             }
         }
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                //Nothing.
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                //Nothing.
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.position?.let { position ->
+                    mainVm?.selectPosition(position)
+                }
+            }
+        })
     }
 
-    @BindingAdapter("setPagerCount", "setFsm")
+    @BindingAdapter("setPagerCount", "setFsm", "setVm")
     @JvmStatic
     fun setViewPager(
         viewPager: ViewPager,
         items: List<String>?,
-        fragmentManager: FragmentManager?
+        fragmentManager: FragmentManager?,
+        mainVm: MainViewModel?
     ) {
         if (!items.isNullOrEmpty())
             viewPager.adapter?.run {
@@ -110,6 +123,43 @@ object BindingAdapter {
             } ?: kotlin.run {
                 if (fragmentManager != null)
                     viewPager.adapter = ViewPagerAdapter(fragmentManager, items)
+                viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                    override fun onPageScrollStateChanged(state: Int) {
+                        //Nothing.
+                    }
+
+                    override fun onPageScrolled(
+                        position: Int,
+                        positionOffset: Float,
+                        positionOffsetPixels: Int
+                    ) {
+                        //Nothing.
+                    }
+
+                    override fun onPageSelected(position: Int) {
+                        mainVm?.selectPosition(position)
+                    }
+                })
+            }
+    }
+
+
+    @BindingAdapter("setViewPosition")
+    @JvmStatic
+    fun setViewPosition(view: View, position: Int?) {
+        if (position != null)
+            when (view) {
+                is ViewPager -> {
+                    view.currentItem = position
+                }
+                is TabLayout -> {
+                    view.run {
+                        getTabAt(position)?.let { tab ->
+                            selectTab(tab)
+                        }
+
+                    }
+                }
             }
     }
 
